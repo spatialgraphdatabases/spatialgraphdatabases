@@ -1,0 +1,19 @@
+---
+layout: layouts/base.njk
+---
+<article class="page" data-page>
+  {% include "partials/breadcrumbs.njk" %}
+  <div class="page__layout">
+    <div class="page__content">
+      {{ content | safe }}
+    </div>
+    <aside class="page__toc" data-toc aria-label="On this page" hidden>
+      <details open class="page__toc-shell">
+        <summary>On this page</summary>
+        <div class="page__toc-meta" data-reading-time aria-live="polite"></div>
+        <nav data-toc-nav></nav>
+      </details>
+    </aside>
+  </div>
+  {% include "partials/related.njk" %}
+</article>

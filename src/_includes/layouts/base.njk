@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% if pageTitle %}{{ pageTitle }} · {{ site.shortTitle }}{% elif title %}{{ title }} · {{ site.shortTitle }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  <meta name="theme-color" content="{{ site.themeColor }}">
+  <meta name="color-scheme" content="light">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="{% if page.url == '/' %}website{% else %}article{% endif %}">
+  <meta property="og:site_name" content="{{ site.shortTitle }}">
+  <meta property="og:title" content="{{ title or site.title }}">
+  <meta property="og:description" content="{{ description or site.description }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:image" content="{{ site.url }}/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ site.shortTitle }}: graph network drawn over a coordinate grid with a colored routing path and pin marker">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ title or site.title }}">
+  <meta name="twitter:description" content="{{ description or site.description }}">
+  <meta name="twitter:image" content="{{ site.url }}/assets/img/og-image.png">
+  <meta name="twitter:image:alt" content="{{ site.shortTitle }}: graph network drawn over a coordinate grid with a colored routing path and pin marker">
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="{{ site.shortTitle }}">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+  {# ---- JSON-LD structured data ---- #}
+  {%- if page.url == "/" -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "{{ site.url }}/#website",
+        "url": "{{ site.url }}/",
+        "name": "{{ site.title | replace('&', 'and') }}",
+        "alternateName": "{{ site.shortTitle }}",
+        "description": "{{ site.description }}",
+        "inLanguage": "en",
+        "publisher": { "@id": "{{ site.url }}/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "{{ site.url }}/#organization",
+        "name": "{{ site.shortTitle }}",
+        "url": "{{ site.url }}/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ site.url }}/assets/img/icon-512.png",
+          "width": 512,
+          "height": 512
+        }
+      }
+    ]
+  }
+  </script>
+  {%- else -%}
+  {%- set crumbs = page.url | breadcrumbs(collections.all) -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": "{{ site.url }}{{ page.url }}#article",
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}" },
+        "headline": {{ (title or site.title) | dump | safe }},
+        "description": {{ (description or site.description) | dump | safe }},
+        "image": "{{ site.url }}/assets/img/og-image.png",
+        "inLanguage": "en",
+        "isPartOf": { "@id": "{{ site.url }}/#website" },
+        "publisher": { "@id": "{{ site.url }}/#organization" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {%- for c in crumbs -%}
+          {
+            "@type": "ListItem",
+            "position": {{ loop.index }},
+            "name": {{ c.title | dump | safe }}{% if not loop.last %},
+            "item": "{{ site.url }}{{ c.url }}"{% endif %}
+          }{%- if not loop.last -%},{%- endif -%}
+          {%- endfor %}
+        ]
+      }
+    ]
+  }
+  </script>
+  {%- endif %}
+
+  <!-- Optional KaTeX styles (loaded only when math present, but stylesheet is small) -->
+  {% if hasMath %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  {% endif %}
+
+  <link rel="stylesheet" href="/assets/css/main.css?v={{ assets.mainCss }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  {% include "partials/header.njk" %}
+
+  <main id="main" class="site-main">
+    {{ content | safe }}
+  </main>
+
+  {% include "partials/footer.njk" %}
+
+  <script src="/assets/js/site.js?v={{ assets.siteJs }}" defer></script>
+</body>
+</html>

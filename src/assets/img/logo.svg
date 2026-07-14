@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Spatial Graph Databases &amp; Routing">
+  <defs>
+    <linearGradient id="lgBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7c86"/>
+      <stop offset="1" stop-color="#1b3a4b"/>
+    </linearGradient>
+    <linearGradient id="lgEdgeA" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f9c66b"/>
+      <stop offset="1" stop-color="#ff6b6b"/>
+    </linearGradient>
+    <linearGradient id="lgEdgeB" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#79d6c0"/>
+      <stop offset="1" stop-color="#5fa8d3"/>
+    </linearGradient>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0 L0 0 0 20" fill="none" stroke="#ffffff" stroke-width="0.4" opacity="0.18"/>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="320" height="200" rx="22" fill="url(#lgBg)"/>
+  <rect x="0" y="0" width="320" height="200" rx="22" fill="url(#grid)"/>
+
+  <!-- Route path -->
+  <path d="M30 160 Q90 70 160 110 T290 50"
+        stroke="url(#lgEdgeA)" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="0"/>
+
+  <!-- Graph edges -->
+  <g stroke="url(#lgEdgeB)" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.85">
+    <path d="M60 50 L120 90"/>
+    <path d="M120 90 L200 70"/>
+    <path d="M200 70 L260 120"/>
+    <path d="M120 90 L150 150"/>
+    <path d="M150 150 L230 160"/>
+    <path d="M230 160 L260 120"/>
+  </g>
+
+  <!-- Nodes -->
+  <g>
+    <circle cx="60" cy="50" r="7" fill="#ffe28a"/>
+    <circle cx="120" cy="90" r="9" fill="#ffffff"/>
+    <circle cx="120" cy="90" r="3.5" fill="#0e7c86"/>
+    <circle cx="200" cy="70" r="7" fill="#79d6c0"/>
+    <circle cx="260" cy="120" r="7" fill="#ff8a5b"/>
+    <circle cx="150" cy="150" r="7" fill="#f9c66b"/>
+    <circle cx="230" cy="160" r="7" fill="#5fa8d3"/>
+  </g>
+
+  <!-- Pin marker at end of route -->
+  <g transform="translate(286 46)">
+    <path d="M0 0 C-6 -6 -6 -14 0 -14 C6 -14 6 -6 0 0Z" fill="#ff6b6b"/>
+    <circle cx="0" cy="-9" r="3" fill="#fff"/>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+{# Render sibling + child pages relative to the current page. #}
+{% set children = collections.all | directChildrenOf(page.url) %}
+{% set siblings = collections.all | siblingsOf(page.url) %}
+
+{% if children.length or siblings.length %}
+<section class="related" aria-labelledby="related-title">
+  <h2 id="related-title">Related pages</h2>
+  <div class="related__grid">
+    {% if children.length %}
+      <div class="related__col">
+        <h3>Subtopics</h3>
+        <ul>
+        {% for p in children %}
+          <li><a href="{{ site.url }}{{ p.url }}">{{ p.data.title }}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    {% if siblings.length %}
+      <div class="related__col">
+        <h3>Siblings</h3>
+        <ul>
+        {% for p in siblings %}
+          <li><a href="{{ site.url }}{{ p.url }}">{{ p.data.title }}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}

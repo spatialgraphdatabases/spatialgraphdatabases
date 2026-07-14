@@ -1,0 +1,81 @@
+---
+layout: layouts/base.njk
+title: Python for Spatial Graph Databases & Network Routing
+pageTitle: Spatial Graph Databases & Routing
+description: Production-ready patterns for spatial graph construction, Cypher spatial queries, routing algorithms, driver integration, and scaling with Python and Neo4j/GraphDB.
+permalink: /
+---
+
+<section class="hero">
+  <img class="hero__logo" src="/assets/img/logo.svg" alt="Spatial Graph Databases logo: a graph network drawn over a coordinate grid with a colored route line and pin marker" width="640" height="400">
+
+  <h1>Python for Spatial Graph Databases &amp; Network Routing</h1>
+
+  <p class="hero__lede">
+    Production-ready patterns for backend, data and logistics engineers building, querying, routing and scaling spatial graph networks with Python and Neo4j / GraphDB.
+  </p>
+
+  <div class="hero__paragraphs">
+    <p>
+      This site is a focused engineering reference for shipping spatial routing systems that survive real production load. It pairs Cypher with async Python drivers, spatial indexing, and topology-aware ingestion so that distance filters, KNN searches, and shortest-path queries stay sub-second as your graph scales to millions of nodes.
+    </p>
+    <p>
+      You'll find concrete patterns for OSM ingestion, POI enrichment, attribute synchronization, query-planner tuning, and multi-tenant spatial security, plus a dedicated track on network routing algorithms &mdash; Dijkstra, A*, contraction hierarchies, turn restrictions, and Neo4j GDS versus hand-written Cypher &mdash; each grounded in working Python and Cypher snippets. The goal is to treat spatial predicates and shortest-path search as first-class operators, not post-processing filters.
+    </p>
+    <p>
+      Pick a section below to dive in. Each page links to deeper subtopics, and every code block can be copied with one click.
+    </p>
+  </div>
+
+  <div class="cta-row" aria-label="Pick a topic">
+    {% for s in site.sections %}
+      <a class="cta" href="{{ site.url }}/{{ s.slug }}/" style="--cta-color: {{ s.color }}">
+        <span class="cta__icon" aria-hidden="true">
+          {% include "partials/icon-" + s.icon + ".njk" %}
+        </span>
+        <span class="cta__title">{{ s.title }}</span>
+        <span class="cta__sub">{{ s.tagline }}</span>
+        <span class="cta__cta">Explore</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section aria-labelledby="contents-title">
+  <h2 id="contents-title">Browse the content</h2>
+  {% set allPages = collections.all | matchUrl("^/.+/$") %}
+  <p>{{ site.sections.length }} top-level sections spanning {{ allPages.length }} pages &mdash; each section opens onto subtopics and hands-on deep-dive guides.</p>
+
+  <div class="section-card-grid">
+    {% for s in site.sections %}
+      {% set sectionRoot = "/" + s.slug + "/" %}
+      {% set subpages = collections.all | directChildrenOf(sectionRoot) %}
+      <article class="section-card" style="--accent: {{ s.color }}">
+        <h3><a href="{{ site.url }}{{ sectionRoot }}">{{ s.title }}</a></h3>
+        <p>{{ s.tagline }}</p>
+        {% if subpages.length %}
+          <ul>
+            {% for p in subpages %}
+              <li><a href="{{ site.url }}{{ p.url }}">{{ p.data.title }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section aria-labelledby="start-here-title">
+  <h2 id="start-here-title">Start here</h2>
+  <p>Hands-on deep dives that put the patterns to work end to end &mdash; the best place to begin if you learn by reading working Python and Cypher.</p>
+
+  {% set guides = collections.all | matchUrl("^/[^/]+/[^/]+/[^/]+/$") %}
+  <div class="section-card-grid">
+    {% for p in guides %}
+      <article class="section-card">
+        <h3><a href="{{ site.url }}{{ p.url }}">{{ p.data.title }}</a></h3>
+        {% if p.data.description %}<p>{{ p.data.description }}</p>{% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>

@@ -1,0 +1,26 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {%- set pages = collections.all -%}
+  {%- for page in pages | sort(false, false, "url") -%}
+    {%- if page.url and not page.url.endsWith(".xml") and not page.url.endsWith(".txt") and not page.url.endsWith(".webmanifest") -%}
+  <url>
+    <loc>{{ site.url }}{{ page.url }}</loc>
+    <lastmod>{{ page.date.toISOString().split("T")[0] }}</lastmod>
+    <changefreq>monthly</changefreq>
+    {%- if page.url == "/" %}
+    <priority>1.0</priority>
+    {%- elif (page.url.split("/") | length) <= 3 %}
+    <priority>0.9</priority>
+    {%- elif (page.url.split("/") | length) <= 4 %}
+    <priority>0.8</priority>
+    {%- else %}
+    <priority>0.6</priority>
+    {%- endif %}
+  </url>
+    {%- endif -%}
+  {%- endfor %}
+</urlset>

@@ -1,0 +1,22 @@
+{
+  "name": "spatialgraphdatabases-org",
+  "version": "1.0.0",
+  "description": "Python for Spatial Graph Databases & Network Routing",
+  "private": true,
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve --port=8080",
+    "clean": "rm -rf _site",
+    "deploy": "npm run clean && npm run build && wrangler deploy",
+    "deploy:dryrun": "npm run build && wrangler deploy --dry-run"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-navigation": "^0.3.5",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.0.1",
+    "markdown-it-attrs": "^4.3.1",
+    "markdown-it-task-lists": "^2.1.1"
+  }
+}

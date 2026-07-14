@@ -1,0 +1,42 @@
+module.exports = {
+  title: "Python for Spatial Graph Databases & Network Routing",
+  shortTitle: "Spatial Graph Databases",
+  url: "https://www.spatialgraphdatabases.org",
+  description:
+    "Production-ready patterns for spatial graph construction, Cypher spatial queries, routing algorithms, driver integration, and scaling with Python and Neo4j/GraphDB.",
+  themeColor: "#0e7c86",
+  sections: [
+    {
+      key: "fundamentals",
+      slug: "spatial-graph-database-fundamentals-for-python",
+      title: "Fundamentals for Python",
+      tagline: "Storage, indexing, query planning, and security primitives for spatial graphs.",
+      icon: "fundamentals",
+      color: "#0e7c86",
+    },
+    {
+      key: "cypher",
+      slug: "cypher-spatial-queries-pathfinding-patterns",
+      title: "Cypher Spatial Queries & Pathfinding",
+      tagline: "Index-backed distance filters, KNN, joins, performance tuning.",
+      icon: "cypher",
+      color: "#c2410c",
+    },
+    {
+      key: "ingestion",
+      slug: "spatial-graph-construction-osm-ingestion",
+      title: "Graph Construction & OSM Ingestion",
+      tagline: "Pipelines, POI enrichment, attribute sync, async batching.",
+      icon: "ingestion",
+      color: "#5b21b6",
+    },
+    {
+      key: "routing",
+      slug: "network-routing-algorithms-python",
+      title: "Network Routing Algorithms",
+      tagline: "Dijkstra, A*, contraction hierarchies, turn restrictions, GDS vs Cypher.",
+      icon: "routing",
+      color: "#1e40af",
+    },
+  ],
+};

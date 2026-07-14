@@ -1,0 +1,14 @@
+name = "spatialgraphdatabases-org"
+compatibility_date = "2025-05-01"
+
+# Static-only Worker: the Eleventy `_site/` build is served straight from the edge,
+# no Worker script needed. `html_handling = "auto-trailing-slash"` makes /foo and /foo/
+# both resolve to /foo/index.html; `not_found_handling = "404-page"` serves a 404.html
+# (we'll add one if we ever ship a custom 404 — until then, missing pages return a 404).
+[assets]
+directory = "./_site"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+[observability]
+enabled = true
