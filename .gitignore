@@ -26,6 +26,15 @@ yarn-error.log*
 *.swp
 *.swo
 
-# QA scratch output (regenerable)
-_qa_full.txt
+# Authoring and QA workspace — kept locally, never published.
+# The phase plan, blueprint and helper scripts drive the build and the QA gates;
+# the ledgers are QA state. None of them belong in a public repo, and none of
+# them are read by the site build (.eleventy.js takes its input from src/).
+_plan/
+CHECKLIST.md
+CLAUDE.md
+site_description_and_requirements.md
+.qa-ledger.json
 .qa-ledger.json.lock
+.seo-ledger.json
+_qa_full.txt
