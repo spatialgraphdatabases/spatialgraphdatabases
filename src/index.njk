@@ -6,6 +6,10 @@ description: Production-ready patterns for spatial graph construction, Cypher sp
 permalink: /
 ---
 
+{% set allPages = collections.all | matchUrl("^/.+/$") %}
+{% set topicPages = collections.all | matchUrl("^/[^/]+/[^/]+/$") %}
+{% set guidePages = collections.all | matchUrl("^/[^/]+/[^/]+/[^/]+/$") %}
+
 <section class="hero">
   <img class="hero__logo" src="/assets/img/logo.svg" alt="Spatial Graph Databases logo: a graph network drawn over a coordinate grid with a colored route line and pin marker" width="640" height="400">
 
@@ -20,16 +24,16 @@ permalink: /
       This site is a focused engineering reference for shipping spatial routing systems that survive real production load. It pairs Cypher with async Python drivers, spatial indexing, and topology-aware ingestion so that distance filters, KNN searches, and shortest-path queries stay sub-second as your graph scales to millions of nodes.
     </p>
     <p>
-      You'll find concrete patterns for OSM ingestion, POI enrichment, attribute synchronization, query-planner tuning, and multi-tenant spatial security, plus a dedicated track on network routing algorithms &mdash; Dijkstra, A*, contraction hierarchies, turn restrictions, and Neo4j GDS versus hand-written Cypher &mdash; each grounded in working Python and Cypher snippets. The goal is to treat spatial predicates and shortest-path search as first-class operators, not post-processing filters.
+      You'll find concrete patterns for OSM ingestion, POI enrichment, attribute synchronization, query-planner tuning, memory and storage budgets, and multi-tenant spatial security, plus a dedicated track on network routing algorithms &mdash; Dijkstra, A*, contraction hierarchies, turn restrictions, and Neo4j GDS versus hand-written Cypher &mdash; each grounded in working Python and Cypher snippets. The goal is to treat spatial predicates and shortest-path search as first-class operators, not post-processing filters.
     </p>
     <p>
-      Pick a section below to dive in. Each page links to deeper subtopics, and every code block can be copied with one click.
+      Every page carries runnable code, the failure patterns that surface once the data grows, and diagrams of the mechanism rather than of the marketing.
     </p>
   </div>
 
-  <div class="cta-row" aria-label="Pick a topic">
+  <nav class="cta-row" aria-label="Pick a section">
     {% for s in site.sections %}
-      <a class="cta" href="{{ site.url }}/{{ s.slug }}/" style="--cta-color: {{ s.color }}">
+      <a class="cta sec sec--{{ s.key }}" href="{{ site.url }}/{{ s.slug }}/">
         <span class="cta__icon" aria-hidden="true">
           {% include "partials/icon-" + s.icon + ".njk" %}
         </span>
@@ -38,19 +42,61 @@ permalink: /
         <span class="cta__cta">Explore</span>
       </a>
     {% endfor %}
+  </nav>
+</section>
+
+<section aria-labelledby="start-here-title">
+  <h2 id="start-here-title">Start here</h2>
+  <p>Four routes into the material, depending on what you are trying to get working today.</p>
+
+  <div class="section-card-grid">
+    <article class="section-card sec sec--ingestion">
+      <h3><a href="{{ site.url }}/spatial-graph-construction-osm-ingestion/osm-data-ingestion-pipelines/">I need a graph in the first place</a></h3>
+      <p>Turn an OSM extract into a routable topology: streaming the PBF, snapping coordinates, and the incremental re-import that keeps it current without a rebuild.</p>
+      <ul>
+        <li><a href="{{ site.url }}/spatial-graph-construction-osm-ingestion/osm-data-ingestion-pipelines/parsing-osm-pbf-extracts-with-pyosmium/">Parsing OSM PBF extracts with PyOsmium</a></li>
+        <li><a href="{{ site.url }}/spatial-graph-database-fundamentals-for-python/node-and-edge-spatial-mapping/snapping-coordinates-and-detecting-intersections/">Snapping coordinates and detecting intersections</a></li>
+      </ul>
+    </article>
+
+    <article class="section-card sec sec--cypher">
+      <h3><a href="{{ site.url }}/cypher-spatial-queries-pathfinding-patterns/distance-filter-query-patterns/">My spatial query is too slow</a></h3>
+      <p>The index-first discipline: why a distance predicate alone cannot seek, what the two-stage box-then-clip shape looks like, and how to read the plan that proves it worked.</p>
+      <ul>
+        <li><a href="{{ site.url }}/spatial-graph-database-fundamentals-for-python/graph-query-planner-optimization/reading-explain-and-profile-plans-for-spatial-queries/">Reading EXPLAIN and PROFILE plans</a></li>
+        <li><a href="{{ site.url }}/cypher-spatial-queries-pathfinding-patterns/cypher-performance-tuning/eliminating-cartesian-products-in-spatial-cypher/">Eliminating Cartesian products</a></li>
+      </ul>
+    </article>
+
+    <article class="section-card sec sec--routing">
+      <h3><a href="{{ site.url }}/network-routing-algorithms-python/routing-algorithms-python/">I need to choose a routing algorithm</a></h3>
+      <p>Dijkstra, A* and contraction hierarchies compared on the axes that actually decide it &mdash; query shape, update frequency, and how much preprocessing you can afford.</p>
+      <ul>
+        <li><a href="{{ site.url }}/network-routing-algorithms-python/routing-algorithms-python/implementing-astar-with-a-haversine-heuristic-in-python/">A* with a Haversine heuristic</a></li>
+        <li><a href="{{ site.url }}/network-routing-algorithms-python/neo4j-gds-vs-cypher-routing/">Neo4j GDS versus hand-written Cypher</a></li>
+      </ul>
+    </article>
+
+    <article class="section-card sec sec--fundamentals">
+      <h3><a href="{{ site.url }}/spatial-graph-database-fundamentals-for-python/graph-memory-and-storage-tuning/">It worked, then it got slow</a></h3>
+      <p>Memory budgets, index state and plan-cache health &mdash; the three things that change under you without anyone editing a query.</p>
+      <ul>
+        <li><a href="{{ site.url }}/cypher-spatial-queries-pathfinding-patterns/cypher-performance-tuning/keeping-spatial-queries-in-the-plan-cache/">Keeping queries in the plan cache</a></li>
+        <li><a href="{{ site.url }}/spatial-graph-database-fundamentals-for-python/spatial-indexing-strategies/r-tree-vs-geohash-vs-quadtree-for-road-graphs/">R-tree vs geohash vs quadtree</a></li>
+      </ul>
+    </article>
   </div>
 </section>
 
 <section aria-labelledby="contents-title">
   <h2 id="contents-title">Browse the content</h2>
-  {% set allPages = collections.all | matchUrl("^/.+/$") %}
-  <p>{{ site.sections.length }} top-level sections spanning {{ allPages.length }} pages &mdash; each section opens onto subtopics and hands-on deep-dive guides.</p>
+  <p>{{ site.sections.length }} sections, {{ topicPages.length }} topics and {{ guidePages.length }} in-depth guides &mdash; {{ allPages.length }} pages in all. Each section opens onto its topics, and each topic onto the guides that work its patterns end to end.</p>
 
   <div class="section-card-grid">
     {% for s in site.sections %}
       {% set sectionRoot = "/" + s.slug + "/" %}
       {% set subpages = collections.all | directChildrenOf(sectionRoot) %}
-      <article class="section-card" style="--accent: {{ s.color }}">
+      <article class="section-card sec sec--{{ s.key }}">
         <h3><a href="{{ site.url }}{{ sectionRoot }}">{{ s.title }}</a></h3>
         <p>{{ s.tagline }}</p>
         {% if subpages.length %}
@@ -65,17 +111,26 @@ permalink: /
   </div>
 </section>
 
-<section aria-labelledby="start-here-title">
-  <h2 id="start-here-title">Start here</h2>
-  <p>Hands-on deep dives that put the patterns to work end to end &mdash; the best place to begin if you learn by reading working Python and Cypher.</p>
+<section aria-labelledby="all-guides-title">
+  <h2 id="all-guides-title">Every in-depth guide</h2>
+  <p>The full catalogue, grouped by the topic each guide belongs to.</p>
 
-  {% set guides = collections.all | matchUrl("^/[^/]+/[^/]+/[^/]+/$") %}
   <div class="section-card-grid">
-    {% for p in guides %}
-      <article class="section-card">
-        <h3><a href="{{ site.url }}{{ p.url }}">{{ p.data.title }}</a></h3>
-        {% if p.data.description %}<p>{{ p.data.description }}</p>{% endif %}
-      </article>
+    {% for s in site.sections %}
+      {% set topics = collections.all | directChildrenOf("/" + s.slug + "/") %}
+      {% for t in topics %}
+        {% set guides = collections.all | directChildrenOf(t.url) %}
+        {% if guides.length %}
+        <article class="section-card sec sec--{{ s.key }}">
+          <h3><a href="{{ site.url }}{{ t.url }}">{{ t.data.title }}</a></h3>
+          <ul>
+            {% for g in guides %}
+              <li><a href="{{ site.url }}{{ g.url }}">{{ g.data.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </article>
+        {% endif %}
+      {% endfor %}
     {% endfor %}
   </div>
 </section>

@@ -1,0 +1,31 @@
+# Build output
+_site/
+.cache/
+
+# Dependencies
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# QA scratch output (regenerable)
+_qa_full.txt
+.qa-ledger.json.lock

@@ -4,20 +4,19 @@
       <strong>{{ site.shortTitle }}</strong>
       <p>{{ site.description }}</p>
     </div>
-    <nav class="site-footer__col" aria-label="Sections">
-      <h2>Sections</h2>
-      <ul>
-        {% for s in site.sections %}
-          <li><a href="{{ site.url }}/{{ s.slug }}/">{{ s.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </nav>
-    <nav class="site-footer__col" aria-label="Site">
-      <h2>Site</h2>
-      <ul>
-        <li><a href="{{ site.url }}/">Home</a></li>
-      </ul>
-    </nav>
+    {# Every topic is reachable from every page: the header's compact menu carries
+       the same tree, and this is its always-visible counterpart. #}
+    {% for s in site.sections %}
+      {% set topics = collections.content | directChildrenOf("/" + s.slug + "/") %}
+      <nav class="site-footer__col" aria-label="{{ s.title }}">
+        <h2><a href="{{ site.url }}/{{ s.slug }}/">{{ s.navTitle or s.title }}</a></h2>
+        <ul>
+          {% for t in topics %}
+            <li><a href="{{ site.url }}{{ t.url }}">{{ t.data.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endfor %}
   </div>
   <div class="site-footer__legal">
     <span>&copy; {{ "now" | readableDate | slice(-4) }} {{ site.shortTitle }}.</span>

@@ -202,6 +202,67 @@
     target.textContent = `${minutes} min read · ${words.toLocaleString()} words`;
   }
 
+  // ---------- Theme toggle ----------
+  // The stylesheet already follows the OS via prefers-color-scheme, and the
+  // inline <head> script has already applied any stored choice. This only has
+  // to handle the press: work out what is on screen right now, flip it, stamp
+  // an explicit data-theme and remember it.
+  function initThemeToggle() {
+    const btn = document.querySelector("[data-theme-toggle]");
+    if (!btn) return;
+
+    const root = document.documentElement;
+    const osPrefersDark = () =>
+      window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const current = () => root.getAttribute("data-theme") || (osPrefersDark() ? "dark" : "light");
+
+    const label = () => {
+      const next = current() === "dark" ? "light" : "dark";
+      btn.setAttribute("aria-label", `Switch to ${next} theme`);
+      btn.setAttribute("title", `Switch to ${next} theme`);
+    };
+    label();
+
+    btn.addEventListener("click", () => {
+      const next = current() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) { /* private mode */ }
+      label();
+    });
+
+    // Track the OS while the visitor has made no explicit choice.
+    if (window.matchMedia) {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      const onChange = () => { if (!root.hasAttribute("data-theme")) label(); };
+      if (mq.addEventListener) mq.addEventListener("change", onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    }
+  }
+
+  // ---------- Compact nav menu ----------
+  // The <details> element already opens, closes and is keyboard-operable on its
+  // own; this only adds the two dismissals a disclosure menu is expected to have.
+  function initNavMenu() {
+    const menu = document.querySelector("[data-nav-menu]");
+    if (!menu) return;
+
+    document.addEventListener("click", (e) => {
+      if (menu.open && !menu.contains(e.target)) menu.open = false;
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu.open) {
+        menu.open = false;
+        const summary = menu.querySelector("summary");
+        if (summary) summary.focus();
+      }
+    });
+    // Following a link inside the panel should not leave it hanging open when
+    // the destination is the current page (an in-page anchor, say).
+    menu.addEventListener("click", (e) => {
+      if (e.target.closest("a")) menu.open = false;
+    });
+  }
+
   function init() {
     attachCopyButtons();
     initMermaid();
@@ -209,6 +270,8 @@
     initTaskCheckboxes();
     initToc();
     initReadingTime();
+    initThemeToggle();
+    initNavMenu();
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

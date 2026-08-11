@@ -1,9 +1,25 @@
 /* ============================================================
    Spatial Graph Databases — main stylesheet
-   Light, elegant, spatial-themed palette.
+   Elegant spatial-themed palette, shipped in a light and a dark theme.
+
+   THEMING CONTRACT
+   ----------------
+   Every colour in this file comes from a custom property declared on :root.
+   The dark theme redeclares that same token list in two places — under
+   `prefers-color-scheme: dark` (guarded so an explicit light choice still wins)
+   and under `[data-theme="dark"]` (so the header toggle wins in both
+   directions). Nothing else in the sheet needs a dark-mode branch.
+
+   Diagrams participate. Every hand-authored inline SVG paints through the
+   --viz-* tokens below rather than baking literal hexes, so a theme flip
+   repaints diagram interiors — panels, strokes, labels, rating pills — and not
+   merely the prose around them. Both sets are chosen to clear WCAG AA against
+   the surfaces they land on; see the --viz-on-pill note before changing one.
    ============================================================ */
 
 :root {
+  color-scheme: light;
+
   /* Palette */
   --surface: #fbfaf6;
   --surface-2: #ffffff;
@@ -17,11 +33,35 @@
   --accent: #0a656d;        /* teal */
   --accent-2: #a8380b;      /* warm rust (CTA) */
   --accent-3: #5b21b6;      /* indigo */
-  --accent-4: #b58900;      /* mustard */
-  --accent-coral: #ff6b6b;
+  --accent-4: #7d6200;      /* mustard */
+  --accent-coral: #b83a2a;
   --accent-amber: #f9c66b;
   --accent-mint: #79d6c0;
   --accent-sky: #5fa8d3;
+
+  /* Fill/ink pair for anything painted ON the accent (chips, list markers,
+     the current nav item, the copy button's active state). Splitting these out
+     is what lets the dark theme use a LIGHT teal chip with DARK text instead of
+     inheriting white-on-pale-teal. */
+  --accent-fill: #0a656d;
+  --on-accent: #ffffff;
+
+  /* Diagram palette (inline SVG interiors) */
+  --viz-bg: #ffffff;
+  --viz-panel: #f4f4f5;
+  --viz-panel-2: #ece9df;
+  --viz-stroke: #9ca3af;
+  --viz-stroke-soft: #cdc6b3;
+  --viz-ink: #1f2937;
+  --viz-ink-mute: #565f6d;
+  /* Rating/severity fills. In light mode all three are dark enough to carry
+     white text; in dark mode all three are light enough to carry near-black
+     text — which is why a single --viz-on-pill works for the whole set. */
+  --viz-good: #0a656d;
+  --viz-ok: #7d6200;
+  --viz-poor: #a8320f;
+  --viz-info: #1e4f9c;
+  --viz-on-pill: #ffffff;
 
   --code-bg: #f6f2e7;
   --code-ink: #1b2330;
@@ -47,6 +87,113 @@
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-serif: "Iowan Old Style", "Charter", "Source Serif Pro", "Cambria", Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+}
+
+/* ---- Dark theme -------------------------------------------------------
+   Declared twice on purpose. The media block serves a first-time visitor
+   whose OS asks for dark and who has made no choice here; the attribute
+   block serves anyone who has pressed the toggle. The :not([data-theme])
+   guard on the media block is what stops the OS preference from overriding
+   a visitor who explicitly chose light. Keep the two token lists identical.
+   ----------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --surface: #0f1620;
+    --surface-2: #16202c;
+    --surface-3: #1e2b39;
+    --ink: #e9eef5;
+    --ink-soft: #c0cddc;
+    --ink-mute: #a2b1c2;
+    --line: #27364a;
+    --line-strong: #3d5064;
+
+    --accent: #4ecdc0;
+    --accent-2: #ff9470;
+    --accent-3: #b8a6ff;
+    --accent-4: #e3bf51;
+    --accent-coral: #ff9d85;
+    --accent-amber: #f0cf85;
+    --accent-mint: #7fe0cb;
+    --accent-sky: #82c0e8;
+
+    --accent-fill: #4ecdc0;
+    --on-accent: #06222a;
+
+    --viz-bg: #131c26;
+    --viz-panel: #1c2836;
+    --viz-panel-2: #243244;
+    --viz-stroke: #55697f;
+    --viz-stroke-soft: #3d5064;
+    --viz-ink: #e9eef5;
+    --viz-ink-mute: #a2b1c2;
+    --viz-good: #5fd4c6;
+    --viz-ok: #e3bf51;
+    --viz-poor: #ff9d85;
+    --viz-info: #9fc6ff;
+    --viz-on-pill: #0b1219;
+
+    --code-bg: #131c26;
+    --code-ink: #e9eef5;
+    --code-border: #27364a;
+
+    --inline-code-bg: #1e2b39;
+    --inline-code-ink: #e3bf51;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --surface: #0f1620;
+  --surface-2: #16202c;
+  --surface-3: #1e2b39;
+  --ink: #e9eef5;
+  --ink-soft: #c0cddc;
+  --ink-mute: #a2b1c2;
+  --line: #27364a;
+  --line-strong: #3d5064;
+
+  --accent: #4ecdc0;
+  --accent-2: #ff9470;
+  --accent-3: #b8a6ff;
+  --accent-4: #e3bf51;
+  --accent-coral: #ff9d85;
+  --accent-amber: #f0cf85;
+  --accent-mint: #7fe0cb;
+  --accent-sky: #82c0e8;
+
+  --accent-fill: #4ecdc0;
+  --on-accent: #06222a;
+
+  --viz-bg: #131c26;
+  --viz-panel: #1c2836;
+  --viz-panel-2: #243244;
+  --viz-stroke: #55697f;
+  --viz-stroke-soft: #3d5064;
+  --viz-ink: #e9eef5;
+  --viz-ink-mute: #a2b1c2;
+  --viz-good: #5fd4c6;
+  --viz-ok: #e3bf51;
+  --viz-poor: #ff9d85;
+  --viz-info: #9fc6ff;
+  --viz-on-pill: #0b1219;
+
+  --code-bg: #131c26;
+  --code-ink: #e9eef5;
+  --code-border: #27364a;
+
+  --inline-code-bg: #1e2b39;
+  --inline-code-ink: #e3bf51;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
 }
 
 /* Reset-ish */
@@ -75,15 +222,26 @@ a { color: var(--accent); text-decoration: none; }
 }
 .skip-link:focus {
   left: 1rem; top: 1rem; width: auto; height: auto; padding: 0.5rem 1rem;
-  background: var(--accent); color: #fff; border-radius: 6px; z-index: 1000;
+  background: var(--accent-fill); color: var(--on-accent); border-radius: 6px; z-index: 1000;
 }
 
 /* ============================================================
    Header
+
+   LAYOUT CONTRACT — read before touching the flex rules.
+   The header row must never grow taller than one line. An earlier build set a
+   fixed `height` on .site-header__inner and left `flex-wrap: wrap` on the nav
+   list; the five nav labels are wider than the row at every viewport, so the
+   list wrapped to two or three rows inside a 64px box, centred itself on the
+   overflow, and pushed its first row of links up off the top of the viewport
+   while the last row hung below the header border across the page content.
+   Hence: the bar sizes itself with min-height (never a fixed height), the nav
+   list never wraps, and anything that still does not fit scrolls sideways
+   inside the nav instead of growing the bar downwards.
    ============================================================ */
 .site-header {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(251, 250, 246, 0.85);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
   backdrop-filter: saturate(140%) blur(10px);
   -webkit-backdrop-filter: saturate(140%) blur(10px);
   border-bottom: 1px solid var(--line);
@@ -92,36 +250,165 @@ a { color: var(--accent); text-decoration: none; }
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 clamp(1rem, 2vw, 2rem);
-  height: var(--header-h);
-  display: flex; align-items: center; gap: 1.5rem;
+  min-height: var(--header-h);
+  display: flex; align-items: center; gap: 1rem;
+  flex-wrap: nowrap;
 }
-.brand { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--ink); }
+.brand {
+  display: inline-flex; align-items: center; gap: 0.6rem; color: var(--ink);
+  flex: 0 0 auto;
+}
 .brand__mark { flex: none; border-radius: 8px; box-shadow: var(--shadow-sm); }
-.brand__text { display: flex; flex-direction: column; line-height: 1.1; }
-.brand__primary { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
-.brand__secondary { font-size: 0.78rem; color: var(--ink-mute); }
+.brand__text { display: flex; flex-direction: column; line-height: 1.15; }
+.brand__primary { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; white-space: nowrap; }
+.brand__secondary { font-size: 0.78rem; color: var(--ink-mute); white-space: nowrap; }
 
-.site-nav { margin-left: auto; }
-.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.25rem; flex-wrap: wrap; }
+/* The nav is the only flex child allowed to shrink, and it absorbs any
+   shortfall by scrolling rather than by wrapping. */
+.site-nav {
+  margin-left: auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+.site-nav::-webkit-scrollbar { display: none; }
+.site-nav ul {
+  list-style: none; margin: 0; padding: 0.4rem 0;
+  display: flex; gap: 0.25rem;
+  flex-wrap: nowrap;
+}
+.site-nav li { margin: 0; }
 .site-nav a {
   display: inline-flex; align-items: center; gap: 0.45rem;
-  padding: 0.5rem 0.85rem; border-radius: 999px;
+  padding: 0.5rem 0.8rem; border-radius: 999px;
   color: var(--ink-soft);
   font-weight: 500; font-size: 0.92rem;
+  white-space: nowrap;
   transition: color 160ms ease, background 160ms ease, transform 160ms ease;
 }
-.site-nav a svg { color: var(--accent); }
+.site-nav a svg { flex: none; color: var(--accent); }
 .site-nav a:hover { color: var(--ink); background: var(--surface-3); transform: translateY(-1px); }
 .site-nav a[aria-current="page"] {
-  color: #fff; background: var(--accent);
+  color: var(--on-accent); background: var(--accent-fill);
 }
-.site-nav a[aria-current="page"] svg { color: #fff; }
+.site-nav a[aria-current="page"] svg { color: var(--on-accent); }
 
-/* On narrow screens, hide section text labels */
-@media (max-width: 760px) {
+/* ---- Per-section accent -------------------------------------------------
+   Each section carries its own hue on nav icons and cards. Declared here per
+   section key rather than inlined from the data file, so the dark theme can
+   lift each hue to a shade that reads on a dark surface — an inline style
+   would outrank any stylesheet override and strand the dark blue. */
+.sec { --sec: var(--accent); }
+.sec--fundamentals { --sec: #0e7c86; }
+.sec--cypher       { --sec: #c2410c; }
+.sec--ingestion    { --sec: #5b21b6; }
+.sec--routing      { --sec: #1e40af; }
+:root[data-theme="dark"] .sec--fundamentals { --sec: #4ecdc0; }
+:root[data-theme="dark"] .sec--cypher       { --sec: #ff9470; }
+:root[data-theme="dark"] .sec--ingestion    { --sec: #b8a6ff; }
+:root[data-theme="dark"] .sec--routing      { --sec: #82c0e8; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sec--fundamentals { --sec: #4ecdc0; }
+  :root:not([data-theme="light"]) .sec--cypher       { --sec: #ff9470; }
+  :root:not([data-theme="light"]) .sec--ingestion    { --sec: #b8a6ff; }
+  :root:not([data-theme="light"]) .sec--routing      { --sec: #82c0e8; }
+}
+.site-nav a.sec svg,
+.nav-menu__panel a.sec svg { color: var(--sec); }
+.site-nav a.sec[aria-current="page"] { background: var(--sec); color: #fff; }
+:root[data-theme="dark"] .site-nav a.sec[aria-current="page"] { color: #06222a; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .site-nav a.sec[aria-current="page"] { color: #06222a; }
+}
+.site-nav a.sec[aria-current="page"] svg { color: inherit; }
+
+/* Header controls (theme toggle, menu button) */
+/* The positioning context for the menu panel is this row, not the <details>
+   itself: the panel is right-aligned to the edge of the header, and anchoring
+   it to the button would push it off the left of a narrow screen because the
+   theme toggle sits between the button and that edge. */
+.header-tools { position: relative; display: flex; align-items: center; gap: 0.4rem; flex: 0 0 auto; }
+
+.theme-toggle {
+  display: inline-grid; place-content: center;
+  width: 38px; height: 38px; padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: var(--surface-3); }
+.theme-toggle svg { width: 19px; height: 19px; display: block; }
+/* Show the icon for the theme the button would switch TO. */
+.theme-toggle .theme-toggle__moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .theme-toggle__moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .theme-toggle__sun { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .theme-toggle__moon { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .theme-toggle__sun { display: none; }
+}
+
+/* ---- Compact menu (below the desktop breakpoint) ----
+   Built on <details> so it opens, closes and is keyboard-operable with no
+   JavaScript at all; site.js only adds close-on-Escape and close-on-outside. */
+.nav-menu { display: none; }
+.nav-menu__btn {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.5rem 0.8rem; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: var(--surface-2);
+  color: var(--ink-soft); font: 600 0.9rem var(--font-sans);
+  cursor: pointer; list-style: none;
+}
+.nav-menu__btn::-webkit-details-marker { display: none; }
+.nav-menu__btn:hover { color: var(--accent); border-color: var(--accent); }
+.nav-menu[open] .nav-menu__btn { color: var(--on-accent); background: var(--accent-fill); border-color: var(--accent-fill); }
+.nav-menu__panel {
+  position: absolute; right: 0; top: calc(100% + 0.5rem);
+  width: min(calc(100vw - 2rem), 340px);
+  max-height: min(70vh, 560px); overflow-y: auto;
+  padding: 0.6rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 60;
+}
+.nav-menu__panel ul { list-style: none; margin: 0; padding: 0; }
+.nav-menu__panel li { margin: 0; }
+.nav-menu__panel a {
+  display: flex; align-items: center; gap: 0.55rem;
+  padding: 0.55rem 0.6rem; border-radius: var(--radius-sm);
+  color: var(--ink-soft); font-size: 0.94rem; line-height: 1.3;
+}
+.nav-menu__panel a:hover { background: var(--surface-3); color: var(--ink); }
+.nav-menu__panel a[aria-current="page"] { color: var(--accent); font-weight: 600; background: var(--surface-3); }
+.nav-menu__panel a svg { flex: none; width: 18px; height: 18px; color: var(--accent); }
+.nav-menu__group { margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+.nav-menu__group:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.nav-menu__sub { padding-left: 2.05rem; }
+.nav-menu__sub a { padding: 0.35rem 0.6rem; font-size: 0.88rem; color: var(--ink-mute); }
+
+/* Swap the inline row for the menu button once the row stops fitting. */
+@media (max-width: 1179px) {
+  .site-nav { display: none; }
+  .nav-menu { display: block; }
+  /* .site-nav carried the auto margin that pinned the right-hand group to the
+     edge; with it hidden the controls must take that job over, or the menu
+     panel anchors to a mid-row edge and hangs off the left of the screen. */
+  .header-tools { margin-left: auto; }
+}
+@media (max-width: 560px) {
   .brand__secondary { display: none; }
-  .site-nav a span { display: none; }
-  .site-nav a { padding: 0.5rem; }
+  .brand__primary { font-size: 0.95rem; }
+}
+@media (max-width: 400px) {
+  .brand__primary { max-width: 9.5rem; white-space: normal; line-height: 1.1; }
+  .nav-menu__btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
 /* ============================================================
@@ -311,7 +598,7 @@ li > ul, li > ol { margin: 0.4em 0 0.4em; }
   width: 0.45em;
   height: 0.45em;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-3));
+  background: linear-gradient(135deg, var(--accent-fill), var(--accent-3));
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 /* Nested unordered list: hollow marker so it visually differs */
@@ -347,8 +634,8 @@ li > ul, li > ol { margin: 0.4em 0 0.4em; }
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 0.78rem;
-  color: #fff;
-  background: linear-gradient(135deg, var(--accent), var(--accent-3));
+  color: var(--on-accent);
+  background: linear-gradient(135deg, var(--accent-fill), var(--accent-3));
   border-radius: 999px;
   box-shadow: 0 1px 2px rgba(20, 30, 50, 0.18);
   line-height: 1;
@@ -417,8 +704,8 @@ pre .copy-btn {
 }
 pre:hover .copy-btn,
 pre:focus-within .copy-btn { opacity: 1; pointer-events: auto; }
-pre .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-pre .copy-btn[data-state="copied"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+pre .copy-btn:hover { background: var(--accent-fill); color: var(--on-accent); border-color: var(--accent-fill); }
+pre .copy-btn[data-state="copied"] { background: var(--accent-fill); color: var(--on-accent); border-color: var(--accent-fill); }
 
 /* Syntax highlighting (Prism token colors tuned to a light, warm palette) */
 .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #6b6650; font-style: italic; }
@@ -431,10 +718,85 @@ pre .copy-btn[data-state="copied"] { background: var(--accent); color: #fff; bor
 .token.function, .token.class-name { color: #c2410c; }
 .token.regex, .token.important, .token.variable { color: #b13c3c; }
 
+/* Dark-theme syntax highlighting. The light token set above is tuned for a warm
+   cream code surface; every one of those hues fails AA on the dark code surface,
+   so the whole scale is restated rather than nudged. */
+:root[data-theme="dark"] .token.comment,
+:root[data-theme="dark"] .token.prolog,
+:root[data-theme="dark"] .token.doctype,
+:root[data-theme="dark"] .token.cdata { color: #9aa8b8; font-style: italic; }
+:root[data-theme="dark"] .token.punctuation { color: #b3c1d1; }
+:root[data-theme="dark"] .token.property,
+:root[data-theme="dark"] .token.tag,
+:root[data-theme="dark"] .token.constant,
+:root[data-theme="dark"] .token.symbol,
+:root[data-theme="dark"] .token.deleted { color: #ff9b9b; }
+:root[data-theme="dark"] .token.boolean,
+:root[data-theme="dark"] .token.number { color: #e8c06a; }
+:root[data-theme="dark"] .token.selector,
+:root[data-theme="dark"] .token.attr-name,
+:root[data-theme="dark"] .token.string,
+:root[data-theme="dark"] .token.char,
+:root[data-theme="dark"] .token.builtin,
+:root[data-theme="dark"] .token.inserted { color: #7fd6a4; }
+:root[data-theme="dark"] .token.operator,
+:root[data-theme="dark"] .token.entity,
+:root[data-theme="dark"] .token.url,
+:root[data-theme="dark"] .language-css .token.string,
+:root[data-theme="dark"] .style .token.string { color: #7fd0e8; }
+:root[data-theme="dark"] .token.atrule,
+:root[data-theme="dark"] .token.attr-value,
+:root[data-theme="dark"] .token.keyword { color: #c4b0ff; }
+:root[data-theme="dark"] .token.function,
+:root[data-theme="dark"] .token.class-name { color: #ffab7d; }
+:root[data-theme="dark"] .token.regex,
+:root[data-theme="dark"] .token.important,
+:root[data-theme="dark"] .token.variable { color: #ff9b9b; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .token.comment,
+  :root:not([data-theme="light"]) .token.prolog,
+  :root:not([data-theme="light"]) .token.doctype,
+  :root:not([data-theme="light"]) .token.cdata { color: #9aa8b8; font-style: italic; }
+  :root:not([data-theme="light"]) .token.punctuation { color: #b3c1d1; }
+  :root:not([data-theme="light"]) .token.property,
+  :root:not([data-theme="light"]) .token.tag,
+  :root:not([data-theme="light"]) .token.constant,
+  :root:not([data-theme="light"]) .token.symbol,
+  :root:not([data-theme="light"]) .token.deleted { color: #ff9b9b; }
+  :root:not([data-theme="light"]) .token.boolean,
+  :root:not([data-theme="light"]) .token.number { color: #e8c06a; }
+  :root:not([data-theme="light"]) .token.selector,
+  :root:not([data-theme="light"]) .token.attr-name,
+  :root:not([data-theme="light"]) .token.string,
+  :root:not([data-theme="light"]) .token.char,
+  :root:not([data-theme="light"]) .token.builtin,
+  :root:not([data-theme="light"]) .token.inserted { color: #7fd6a4; }
+  :root:not([data-theme="light"]) .token.operator,
+  :root:not([data-theme="light"]) .token.entity,
+  :root:not([data-theme="light"]) .token.url,
+  :root:not([data-theme="light"]) .language-css .token.string,
+  :root:not([data-theme="light"]) .style .token.string { color: #7fd0e8; }
+  :root:not([data-theme="light"]) .token.atrule,
+  :root:not([data-theme="light"]) .token.attr-value,
+  :root:not([data-theme="light"]) .token.keyword { color: #c4b0ff; }
+  :root:not([data-theme="light"]) .token.function,
+  :root:not([data-theme="light"]) .token.class-name { color: #ffab7d; }
+  :root:not([data-theme="light"]) .token.regex,
+  :root:not([data-theme="light"]) .token.important,
+  :root:not([data-theme="light"]) .token.variable { color: #ff9b9b; }
+}
+
+
 /* ============================================================
    Tables
    ============================================================ */
-.page__content .table-wrapper {
+/* Scoped to the article, not to .page__content — a table rendered outside the
+   prose column (a listing block, a homepage comparison) is still a content
+   table and must not fall back to bare browser defaults. Cells carry tabular
+   figures so a column of measurements lines up and stays wide enough for its
+   longest value. */
+.site-main .table-wrapper {
   width: 100%;
   overflow-x: auto;
   margin: 1.4em 0;
@@ -442,26 +804,27 @@ pre .copy-btn[data-state="copied"] { background: var(--accent); color: #fff; bor
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--line);
 }
-.page__content table,
-.page__content > table {
+.site-main table {
   display: table;
   width: 100%;
   border-collapse: collapse;
   font-size: 0.94rem;
   background: var(--surface-2);
 }
-.page__content .table-wrapper > table {
+.site-main .table-wrapper > table {
   margin: 0;
   border: 0;
   border-radius: 0;
   box-shadow: none;
 }
-.page__content th, .page__content td {
+.site-main th, .site-main td {
   padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
-.page__content th { background: var(--surface-3); font-weight: 700; }
-.page__content tr:last-child td { border-bottom: 0; }
-.page__content tr:hover td { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.site-main th { background: var(--surface-3); font-weight: 700; color: var(--ink); }
+.site-main tr:last-child td { border-bottom: 0; }
+.site-main tr:hover td { background: color-mix(in srgb, var(--accent) 6%, transparent); }
 
 /* ============================================================
    Task lists (GFM checkboxes)
@@ -583,7 +946,7 @@ pre .copy-btn[data-state="copied"] { background: var(--accent); color: #fff; bor
   max-width: 1100px;
 }
 .cta {
-  --cta-color: var(--accent);
+  --cta-color: var(--sec, var(--accent));
   display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start;
   padding: 1.2rem 1.3rem;
   border-radius: var(--radius-md);
@@ -622,7 +985,7 @@ pre .copy-btn[data-state="copied"] { background: var(--accent); color: #fff; bor
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 .section-card {
-  --accent: var(--accent);
+  --card-accent: var(--sec, var(--accent));
   padding: 1.4rem 1.4rem 1.2rem;
   border-radius: var(--radius-md);
   background: var(--surface-2);
@@ -633,13 +996,13 @@ pre .copy-btn[data-state="copied"] { background: var(--accent); color: #fff; bor
 }
 .section-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .section-card h3 { margin: 0; }
-.section-card h3 a { color: var(--accent); text-decoration: none; }
+.section-card h3 a { color: var(--card-accent); text-decoration: none; }
 .section-card h3 a:hover { text-decoration: underline; }
 .section-card p { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
 .section-card ul { padding-left: 1.1rem; margin: 0.4rem 0 0; }
 .section-card ul li { font-size: 0.92rem; }
 .section-card ul li a { color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 120ms ease; }
-.section-card ul li a:hover { border-bottom-color: var(--accent); color: var(--accent); }
+.section-card ul li a:hover { border-bottom-color: var(--card-accent); color: var(--card-accent); }
 
 /* ============================================================
    Footer
@@ -657,12 +1020,19 @@ pre .copy-btn[data-state="copied"] { background: var(--accent); color: #fff; bor
   padding: 2.5rem clamp(1rem, 3vw, 2.5rem) 1.5rem;
   display: grid;
   gap: 2rem;
-  grid-template-columns: 1.4fr repeat(2, 1fr);
+  /* One column per section plus the brand blurb; auto-fit so adding a section
+     to the data file does not require touching this rule. */
+  grid-template-columns: 1.4fr repeat(auto-fit, minmax(170px, 1fr));
 }
-@media (max-width: 720px) {
-  .site-footer__inner { grid-template-columns: 1fr 1fr; }
+@media (max-width: 900px) {
+  .site-footer__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .site-footer__brand { grid-column: 1 / -1; }
 }
+@media (max-width: 520px) {
+  .site-footer__inner { grid-template-columns: minmax(0, 1fr); }
+}
+.site-footer__col h2 a { color: inherit; }
+.site-footer__col h2 a:hover { color: var(--accent); }
 .site-footer__col h2 {
   font-family: var(--font-sans); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink); margin: 0 0 0.7rem; border-left: 0; padding-left: 0;

@@ -5,8 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{% if pageTitle %}{{ pageTitle }} · {{ site.shortTitle }}{% elif title %}{{ title }} · {{ site.shortTitle }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{{ description or site.description }}">
-  <meta name="theme-color" content="{{ site.themeColor }}">
-  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="{{ site.themeColor }}" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1620" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+
+  {# No-flash theme bootstrap. Runs before first paint and stamps an explicit
+     data-theme from the visitor's stored choice; with no stored choice it stamps
+     nothing, leaving the stylesheet's prefers-color-scheme block to follow the OS.
+     Inline and synchronous on purpose — a deferred script repaints after paint,
+     which is the flash this exists to prevent. #}
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private mode: fall back to the OS preference */ }
+    })();
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:type" content="{% if page.url == '/' %}website{% else %}article{% endif %}">
