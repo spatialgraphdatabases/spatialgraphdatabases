@@ -141,9 +141,9 @@ Each construction makes a different claim, and the claim is what should drive th
   <rect x="520" y="42" width="236" height="206" rx="10" fill="var(--viz-panel,#f4f4f5)" stroke="var(--viz-good,#0a656d)" stroke-width="1.8"/>
   <text x="638" y="66" text-anchor="middle" font-size="11" font-weight="700" fill="var(--viz-good,#0a656d)">cell union</text>
   <g fill="var(--viz-good,#0a656d)" opacity="0.32">
-    <rect x="566" y="160" width="34" height="32"/><rect x="598" y="172" width="34" height="32"/><rect x="630" y="164" width="34" height="32"/>
-    <rect x="666" y="176" width="34" height="32"/><rect x="584" y="184" width="34" height="32"/><rect x="644" y="188" width="34" height="32"/>
-    <rect x="690" y="164" width="34" height="32"/>
+    <rect x="566" y="160" width="34" height="32"/><rect x="600" y="160" width="34" height="32"/><rect x="634" y="160" width="34" height="32"/>
+    <rect x="702" y="160" width="34" height="32"/><rect x="600" y="192" width="34" height="32"/><rect x="634" y="192" width="34" height="32"/>
+    <rect x="668" y="192" width="34" height="32"/>
   </g>
   <path d="M548 128 Q638 106 728 130 L728 152 Q638 130 548 154 Z" fill="var(--accent-sky,#5fa8d3)" opacity="0.5"/>
   <g fill="var(--accent-3,#5b21b6)">
@@ -202,6 +202,8 @@ One property of the cell union is worth exploiting rather than working around: b
   <text x="44" y="234" font-size="11" font-weight="700" fill="currentColor">output polygon: identical in both cases</text>
   <text x="430" y="234" font-size="10" fill="var(--viz-ink-mute,#565f6d)">the reduction costs one pass over the node list</text>
 </svg>
+
+A closing point about how the polygon is presented. Whichever construction is used, the shape is a summary of a node set and the node set is a summary of a road network, so the boundary carries two layers of approximation before anyone looks at it. Rendering it with a hard, high-contrast outline invites the reader to treat the edge as exact — and the edge is the least reliable part of it, since a node just inside the ceiling and one just outside differ by seconds. Drawing the boundary with a soft edge, or rendering the bands as a graded fill without a stroke, communicates the uncertainty that is genuinely there. It is a presentation choice rather than a technical one, and it is the difference between a map that informs a depot-siting decision and one that gets quoted back as a commitment.
 
 ## Related
 
