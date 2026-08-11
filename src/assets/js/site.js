@@ -94,6 +94,7 @@
             ],
             throwOnError: false,
           });
+          makeWideMathKeyboardScrollable();
         } catch (_) {}
       };
       document.head.appendChild(s2);
@@ -200,6 +201,25 @@
     if (words < 80) return;
     const minutes = Math.max(1, Math.round(words / 220));
     target.textContent = `${minutes} min read · ${words.toLocaleString()} words`;
+  }
+
+  // ---------- Keyboard access for wide formulae ----------
+  // A display formula wider than its column scrolls horizontally, and a
+  // scrollable region with no focusable content cannot be reached by keyboard
+  // at all — axe reports it as scrollable-region-focusable, and a keyboard user
+  // simply cannot see the right-hand end of the equation. tabindex="0" is added
+  // only to the ones that actually overflow, so narrow formulae do not become
+  // stray tab stops.
+  function makeWideMathKeyboardScrollable() {
+    document.querySelectorAll(".katex-display").forEach((el) => {
+      if (el.scrollWidth > el.clientWidth + 1) {
+        el.setAttribute("tabindex", "0");
+        el.setAttribute("role", "region");
+        el.setAttribute("aria-label", "Mathematical formula, scrollable");
+      } else {
+        el.removeAttribute("tabindex");
+      }
+    });
   }
 
   // ---------- Theme toggle ----------
